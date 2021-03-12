@@ -53,3 +53,11 @@ variable "destination-cidr-block" {
   type        = string
   description = "Destination CIDR Block for Nat and Internet Gateway"
 }
+
+## ECS variables ##
+
+variable "network_mode" {
+  default     = "awsvpc"
+  type        = string
+  description = "task def network mode"
+}

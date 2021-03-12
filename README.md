@@ -1,6 +1,6 @@
 # Terraform Templates for Samar System
 
-###### Terraform is one of the most popular Infrastructure as Code tools.
+Terraform is one of the most popular Infrastructure as Code tools.
 
 ## Terraform Command :
 
@@ -23,7 +23,7 @@
 
 
 ## Backend Config
-To store my terraform state I will be using S3.
+To store my terraform state, we used AWS S3 to store it. 
 
 ## VPC
 Amazon VPC is a service that lets you launch AWS resources in a logically isolated virtual network that hold all our infrastructure.

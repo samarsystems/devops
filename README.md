@@ -1,8 +1,8 @@
-##  Terraform is one of the most popular Infrastructure as Code tools.
+# Terraform Templates for Samar System
 
-###### Terraform Templates for Samar System
+###### Terraform is one of the most popular Infrastructure as Code tools.
 
-Terraform Command :
+## Terraform Command :
 
 ###### The Terraform init command is used to initialize a working directory containing Terraform configuration files. 
 
@@ -51,9 +51,9 @@ This section isn't necessary but is an added layer of security.
 Network access control lists (NACLs) control access in and out of the subnets. The thing to remember with NACLs is they're stateless. This means that return traffic must be explicitly allowed by rules.
 
 ## Application Load Balancer, target group and listeners
-We need to an application load balancer to route traffic to the ECS tasks and manage the load across all the ECS tasks. We have http and https listeners.
+We need to an application load balancer to route traffic to the ECS tasks and manage the load across all the ECS tasks.
 
-A target group tells a load balancer direct traffic ECS containers.A listener is a process that checks for connection requests, using the protocol and port that you configure and the listener rules that you define for a listener determine how the load balancer routes requests to the targets groups.
+A target group tells a load balancer direct traffic ECS containers and have http and https listeners that checks for connection requests, using the protocol and port that you configure and the listener rules that you define for a listener determine how the load balancer routes requests to the targets groups.
 
 I will also be pointing a Route 53 hosted zone record to the load balancer to use https and give a better-looking URL. 
 

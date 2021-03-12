@@ -1,7 +1,7 @@
 
 Terraform is one of the most popular Infrastructure as Code tools.
 
-Terraform Templates for Foodjin 
+Terraform Templates for Samar System
 
 Terraform Command :
 

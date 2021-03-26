@@ -1,19 +1,19 @@
 [
         {
             "volumesFrom": [],
-            "memory": 512,
             "portMappings": [
                 {
-                    "hostPort": 80,
-                    "containerPort": 80,
+                    "hostPort": 8080,
+                    "containerPort": 8080,
                     "protocol": "tcp"
                 }
             ],
             "essential": true,
             "mountPoints": [],
             "name": "java",
+        
             "environment": [],
-            "image": "nginx",
-            "cpu": 2
+            "image": "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-java-prod:latest"
+            
         }
     ]

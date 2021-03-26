@@ -1,7 +1,7 @@
-resource "aws_ecs_service" "ecs_nginx_service" {
-  name            = "${var.projectName}-ecs-nginx-service-${var.env}"
+resource "aws_ecs_service" "ecs_java_service" {
+  name            = "${var.projectName}-ecs-java-service-${var.env}"
   cluster         = aws_ecs_cluster.samar_ecs_cluster.id
-  task_definition = aws_ecs_task_definition.nginx_task_def1.arn
+  task_definition = aws_ecs_task_definition.java_task_def.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
@@ -14,8 +14,6 @@ resource "aws_ecs_service" "ecs_nginx_service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.samar_java_tg.id
     container_name   = "java"
-    container_port   = 80
+    container_port   = 8080
   }
-
-
 }

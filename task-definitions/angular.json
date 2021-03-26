@@ -1,0 +1,19 @@
+[
+        {
+            "volumesFrom": [],
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "mountPoints": [],
+            "name": "angular",
+      
+            "environment": [],
+            "image": "nginx"
+            
+        }
+    ]

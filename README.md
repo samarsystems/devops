@@ -85,5 +85,6 @@ ECS Cluster Auto Scaling (CAS) is a new capability for ECS to manage the scaling
 
 ECS provides the two metrics, ECSServiceAverageCPUUtilization and ECSServiceAverageMemoryUtilization, which you can use for the auto-scaling policies.
 
-
+## EFS
+Amazon Elastic File System (Amazon EFS) provides simple, scalable file storage for use with your Amazon ECS tasks. With Amazon EFS, storage capacity is elastic, growing and shrinking automatically as you add and remove files.  
 

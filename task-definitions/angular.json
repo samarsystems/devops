@@ -1,3 +1,4 @@
+# We are not using angular.json, we have defined json confugation in angular-task-def file.
 [
         {
             "volumesFrom": [],

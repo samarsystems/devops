@@ -10,7 +10,6 @@ resource "aws_ecr_repository" "samar_ecr_repo_java" {
   }
 }
 
-
 resource "aws_ecr_repository" "samar_ecr_repo_angular" {
   name = "${var.projectName}-ecr-angular-${var.env}"
 

@@ -4,25 +4,56 @@ resource "aws_ecs_task_definition" "java_task_def" {
   execution_role_arn       = "arn:aws:iam::527657010034:role/samar-ecs-task-execution-role-prod"
   task_role_arn            = "arn:aws:iam::527657010034:role/samar-ecs-task-execution-role-prod"
   network_mode             = var.network_mode
-  cpu                      = "1024"
-  memory                   = "2048"
+  cpu                      = "2048"
+  memory                   = "4096"
 
-  container_definitions = <<DEFINITION
-[
-  {
-      "portMappings": [
+container_definitions = <<DEFINITION
+    [
+      {
+        "name": "java",
+        "image": "${var.samar_java_image}",
+        "essential": true,
+        "portMappings": [
           {
-              "hostPort": 8080,
-              "containerPort": 8080,
-              "protocol": "tcp"
+            "containerPort": 8080,
+            "hostPort": 8080
+          }
+        ],
+      "essential": true,
+      "mountPoints": [
+          {
+              "containerPath": "/ssAppArea",
+              "sourceVolume": "Java-efs-AppArea"
           }
       ],
-      "essential": true,
-       "mountPoints": [],
-      "name": "java",
-      "image": "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-java-prod:latest"
-  }
-]
-DEFINITION
 
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${var.projectName}-angular-awslog-group-${var.env}",
+            "awslogs-region": "${var.region}",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ]
+    DEFINITION
+
+    volume {
+    name = "Java-efs-AppArea"
+    efs_volume_configuration {
+      file_system_id = aws_efs_file_system.java_efs.id
+      root_directory = "/"
+    }
+  }
+}
+
+
+resource "aws_cloudwatch_log_group" "java_awslogs_group" {
+  name = "${var.projectName}-java-awslog-group-${var.env}"
+
+    tags = {
+    Name        = "${var.projectName}-java-awslog-group-${var.env}"
+    Environment = var.env
+  }
 }

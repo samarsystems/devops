@@ -134,7 +134,7 @@ resource "aws_security_group" "java_efs_sg" {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
-    security_groups = [aws_security_group.java_ecs_sg.id]
+    security_groups = [aws_security_group.java_ecs_sg.id,aws_security_group.java_efs_ssh_sg.id]
   }
 
   egress {
@@ -150,21 +150,19 @@ resource "aws_security_group" "java_efs_sg" {
   }
 }
 
-# angular EFS security group
-resource "aws_security_group" "angular_efs_sg" {
-  name        = "${var.projectName}-angular-efs-sg-${var.env}"
-  description = "Allow angular ECS service to connect EFS"
+# java EFS VM security group
+resource "aws_security_group" "java_efs_ssh_sg" {
+  name        = "${var.projectName}-java-efs-ssh-sg-${var.env}"
+  description = "Allow EC2 instance to connect to connect SSH port"
   vpc_id      = aws_vpc.samar_vpc.id
 
   ingress {
-    description     = "Allow angular ECS service to connect EFS"
-    from_port       = 2049
-    to_port         = 2049
+    description     = "Allow EC2 instance to connect SSH port from IndiaNIC"
+    from_port       = 22
+    to_port         = 22
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
-    security_groups = [aws_security_group.angular_ecs_sg.id]
-  }
-
+    cidr_blocks = ["202.131.107.130/32"]  
+}
   egress {
     from_port   = 0
     to_port     = 0
@@ -173,7 +171,7 @@ resource "aws_security_group" "angular_efs_sg" {
   }
 
   tags = {
-    Name        = "${var.projectName}-angular-efs-sg-${var.env}"
+    Name        = "${var.projectName}-java-efs-ssh-sg-${var.env}"
     Environment = var.env
   }
 }

@@ -7,34 +7,38 @@ resource "aws_ecs_task_definition" "angular_task_def" {
   cpu                      = "1024"
   memory                   = "2048"
 
-  container_definitions = <<DEFINITION
-[
-  {
-      "portMappings": [
+container_definitions = <<DEFINITION
+    [
+      {
+        "name": "${var.projectName}-angular-container-${var.env}",
+        "image": "${var.samar_angular_image}",
+        "essential": true,
+        "portMappings": [
           {
-              "hostPort": 80,
-              "containerPort": 80,
-              "protocol": "tcp"
+            "containerPort": 80,
+            "hostPort": 80
           }
-      ],
-      "essential": true,
-      "mountPoints": [
-          {
-              "containerPath": "/usr/share/nginx/html",
-              "sourceVolume": "efs-html"
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${var.projectName}-angular-awslog-group-${var.env}",
+            "awslogs-region": "${var.region}",
+            "awslogs-stream-prefix": "ecs"
           }
-      ],
-      "name": "angular",
-      "image": "nginx"
-  }
-]
-DEFINITION
+        }
+      }
+    ]
+    DEFINITION
 
-  volume {
-    name = "efs-html"
-    efs_volume_configuration {
-      file_system_id = aws_efs_file_system.angular_efs.id
-      root_directory = "/"
-    }
+}
+
+resource "aws_cloudwatch_log_group" "angular_awslogs_group" {
+  name = "${var.projectName}-angular-awslog-group-${var.env}"
+
+    tags = {
+    Name        = "${var.projectName}-angular-awslog-group-${var.env}"
+    Environment = var.env
   }
 }
+

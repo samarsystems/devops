@@ -10,10 +10,10 @@ resource "aws_lb_target_group" "samar_java_tg" {
     unhealthy_threshold = "2"
     interval            = "30"
     matcher             = "200-404"
-    path                = "/"
+    path                = "/server"
     port                = "traffic-port"
     protocol            = "HTTP"
-    timeout             = "5"
+    timeout             = "15"
   }
 
   tags = {

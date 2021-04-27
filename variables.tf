@@ -61,3 +61,28 @@ variable "network_mode" {
   type        = string
   description = "task def network mode"
 }
+
+variable "samar_java_image" {
+  default     = "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-java-prod:latest"
+  type        = string
+  description = "ESR docker image name for Java application"
+}
+variable "samar_angular_image" {
+  default     = "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-angular-prod:latest"
+  type        = string
+  description = "ESR docker image name for Angular application"
+}
+
+variable "efs_ec2_instance_type" {
+  default     = "t2.micro"
+  type        = string
+  description = "EC2 instance type for EFS instance"
+}
+
+variable "public_subnet_id" {
+  default     = "aws_subnet.samar_pub_sub_1.id"
+  type        = string
+  description = "EC2 Instance for public subnet id"
+}
+
+ 

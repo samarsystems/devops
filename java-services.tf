@@ -1,10 +1,10 @@
 resource "aws_ecs_service" "ecs_java_service" {
-  name            = "${var.projectName}-ecs-java-service-${var.env}"
-  cluster         = aws_ecs_cluster.samar_ecs_cluster.id
+  name                              = "${var.projectName}-ecs-java-service-${var.env}"
+  cluster                           = aws_ecs_cluster.samar_ecs_cluster.id
   health_check_grace_period_seconds = 300
-  task_definition = aws_ecs_task_definition.java_task_def.arn
-  desired_count   = 2
-  launch_type     = "FARGATE"
+  task_definition                   = aws_ecs_task_definition.java_task_def.arn
+  desired_count                     = 1
+  launch_type                       = "FARGATE"
 
   network_configuration {
     security_groups  = [aws_security_group.java_ecs_sg.id]

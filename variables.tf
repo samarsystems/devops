@@ -67,8 +67,15 @@ variable "samar_java_image" {
   type        = string
   description = "ESR docker image name for Java application"
 }
-variable "samar_angular_image" {
-  default     = "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-angular-prod:latest"
+
+variable "samar_angular_image_admin" {
+  default     = "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-angular-admin-prod:latest"
+  type        = string
+  description = "ESR docker image name for Angular application"
+}
+
+variable "samar_angular_image_app1" {
+  default     = "527657010034.dkr.ecr.us-east-1.amazonaws.com/samar-ecr-angular-app1-prod:latest"
   type        = string
   description = "ESR docker image name for Angular application"
 }

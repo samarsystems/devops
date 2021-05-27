@@ -1,5 +1,5 @@
-resource "aws_ecs_task_definition" "angular_task_def" {
-  family                   = "${var.projectName}-angular-task-def-${var.env}"
+resource "aws_ecs_task_definition" "angular_task_def_admin" {
+  family                   = "${var.projectName}-angular-task-def_admin-${var.env}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = "arn:aws:iam::527657010034:role/samar-ecs-task-execution-role-prod"
   task_role_arn            = "arn:aws:iam::527657010034:role/samar-ecs-task-execution-role-prod"
@@ -7,11 +7,11 @@ resource "aws_ecs_task_definition" "angular_task_def" {
   cpu                      = "1024"
   memory                   = "2048"
 
-container_definitions = <<DEFINITION
+  container_definitions = <<DEFINITION
     [
       {
-        "name": "${var.projectName}-angular-container-${var.env}",
-        "image": "${var.samar_angular_image}",
+        "name": "${var.projectName}-angular-container-admin-${var.env}",
+        "image": "${var.samar_angular_image_admin}",
         "essential": true,
         "portMappings": [
           {
@@ -22,7 +22,7 @@ container_definitions = <<DEFINITION
         "logConfiguration": {
           "logDriver": "awslogs",
           "options": {
-            "awslogs-group": "${var.projectName}-angular-awslog-group-${var.env}",
+            "awslogs-group": "${var.projectName}-angular-awslog-group-admin-${var.env}",
             "awslogs-region": "${var.region}",
             "awslogs-stream-prefix": "ecs"
           }
@@ -34,10 +34,10 @@ container_definitions = <<DEFINITION
 }
 
 resource "aws_cloudwatch_log_group" "angular_awslogs_group" {
-  name = "${var.projectName}-angular-awslog-group-${var.env}"
+  name = "${var.projectName}-angular-awslog-group-admin-${var.env}"
 
-    tags = {
-    Name        = "${var.projectName}-angular-awslog-group-${var.env}"
+  tags = {
+    Name        = "${var.projectName}-angular-awslog-group1-${var.env}"
     Environment = var.env
   }
 }

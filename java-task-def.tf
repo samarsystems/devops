@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "java_task_def" {
   cpu                      = "2048"
   memory                   = "4096"
 
-container_definitions = <<DEFINITION
+  container_definitions = <<DEFINITION
     [
       {
         "name": "java",
@@ -30,7 +30,7 @@ container_definitions = <<DEFINITION
         "logConfiguration": {
           "logDriver": "awslogs",
           "options": {
-            "awslogs-group": "${var.projectName}-angular-awslog-group-${var.env}",
+            "awslogs-group": "${var.projectName}-java-awslog-group-${var.env}",
             "awslogs-region": "${var.region}",
             "awslogs-stream-prefix": "ecs"
           }
@@ -39,7 +39,7 @@ container_definitions = <<DEFINITION
     ]
     DEFINITION
 
-    volume {
+  volume {
     name = "Java-efs-AppArea"
     efs_volume_configuration {
       file_system_id = aws_efs_file_system.java_efs.id
@@ -52,8 +52,10 @@ container_definitions = <<DEFINITION
 resource "aws_cloudwatch_log_group" "java_awslogs_group" {
   name = "${var.projectName}-java-awslog-group-${var.env}"
 
-    tags = {
+  tags = {
     Name        = "${var.projectName}-java-awslog-group-${var.env}"
     Environment = var.env
   }
 }
+
+

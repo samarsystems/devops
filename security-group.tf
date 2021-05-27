@@ -34,9 +34,10 @@ resource "aws_security_group" "java_lb_sg" {
     Environment = var.env
   }
 }
+
 # Angular load balancer security group
-resource "aws_security_group" "angular_lb_sg" {
-  name        = "${var.projectName}-angular-lb-sg-${var.env}"
+resource "aws_security_group" "angular_lb_sg_admin" {
+  name        = "${var.projectName}-angular-lb-sg-admin-${var.env}"
   description = "Allow http & https inbound traffic"
   vpc_id      = aws_vpc.samar_vpc.id
 
@@ -66,22 +67,33 @@ resource "aws_security_group" "angular_lb_sg" {
   }
 
   tags = {
-    Name        = "${var.projectName}-anjular-lb-sg-${var.env}"
+    Name        = "${var.projectName}-angular-lb-sg_admin-${var.env}"
     Environment = var.env
   }
 }
-# Angular ECS security group
-resource "aws_security_group" "angular_ecs_sg" {
-  name        = "${var.projectName}-angular-ecs-sg-${var.env}"
-  description = "Allow TLS inbound traffic"
+
+# Angular load balancer security group app1 
+resource "aws_security_group" "angular_lb_sg_app1" {
+  name        = "${var.projectName}-angular-lb-sg-app1-${var.env}"
+  description = "Allow http & https inbound traffic"
   vpc_id      = aws_vpc.samar_vpc.id
 
   ingress {
-    description     = "Allow Angular port for load balancer"
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.angular_lb_sg.id]
+    description      = "https port"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "http port"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
@@ -92,11 +104,66 @@ resource "aws_security_group" "angular_ecs_sg" {
   }
 
   tags = {
-    Name        = "${var.projectName}-anjular-ecs-sg-${var.env}"
+    Name        = "${var.projectName}-angular-lb-sg-aap1-${var.env}"
     Environment = var.env
   }
 }
-# java ECS security group
+
+# Angular ECS security group admin
+resource "aws_security_group" "angular_ecs_sg_admin" {
+  name        = "${var.projectName}-angular-ecs-sg-admin-${var.env}"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.samar_vpc.id
+
+  ingress {
+    description     = "Allow Angular port for load balancer-admin"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.angular_lb_sg_admin.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "${var.projectName}-anjular-ecs-sg-admin-${var.env}"
+    Environment = var.env
+  }
+}
+
+# Angular ECS security group app1 
+resource "aws_security_group" "angular_ecs_sg_app1" {
+  name        = "${var.projectName}-angular-ecs-sg-app1-${var.env}"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.samar_vpc.id
+
+  ingress {
+    description     = "Allow Angular port for load balancer-app1"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.angular_lb_sg_app1.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "${var.projectName}-anjular-ecs-sg-app1-${var.env}"
+    Environment = var.env
+  }
+}
+
+# java ECS security group 
 resource "aws_security_group" "java_ecs_sg" {
   name        = "${var.projectName}-java-ecs-sg-${var.env}"
   description = "Allow java port for load balancer"
@@ -123,7 +190,8 @@ resource "aws_security_group" "java_ecs_sg" {
   }
 }
 
-# java EFS security group
+
+# java EFS security group 
 resource "aws_security_group" "java_efs_sg" {
   name        = "${var.projectName}-java-efs-sg-${var.env}"
   description = "Allow angular ECS service to connect EFS"
@@ -134,7 +202,7 @@ resource "aws_security_group" "java_efs_sg" {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
-    security_groups = [aws_security_group.java_ecs_sg.id,aws_security_group.java_efs_ssh_sg.id]
+    security_groups = [aws_security_group.java_ecs_sg.id, aws_security_group.java_efs_ssh_sg.id]
   }
 
   egress {
@@ -157,12 +225,12 @@ resource "aws_security_group" "java_efs_ssh_sg" {
   vpc_id      = aws_vpc.samar_vpc.id
 
   ingress {
-    description     = "Allow EC2 instance to connect SSH port from IndiaNIC"
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    cidr_blocks = ["202.131.107.130/32"]  
-}
+    description = "Allow EC2 instance to connect SSH port from IndiaNIC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["202.131.107.130/32"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
